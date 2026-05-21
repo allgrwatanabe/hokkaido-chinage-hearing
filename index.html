@@ -214,12 +214,32 @@
     }
 
     .draft {
-      white-space: pre-wrap;
       background: #fbfcfe;
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 14px;
       min-height: 180px;
+    }
+    .draft-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .draft-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #eef5fb;
+      padding: 8px 10px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .draft-item-body {
+      padding: 12px;
+      white-space: pre-wrap;
     }
 
     .cases-toolbar {
@@ -347,7 +367,8 @@
               <div class="field"><label>常時使用する従業員数</label><input name="employees" type="number" min="0" placeholder="人"></div>
               <div class="field"><label>電話</label><input name="tel" type="tel"></div>
               <div class="field"><label>メール</label><input name="email" type="email"></div>
-              <div class="field span-2"><label>許認可・営業許可の有無<span class="hint">飲食、旅館、建設、古物、不動産、旅客運送など</span></label><input name="license" type="text" placeholder="例：飲食店営業許可あり / 不要"></div>
+              <div class="field"><label>許認可・営業許可の有無<span class="hint">飲食、旅館、建設、古物、不動産、旅客運送など</span></label><select name="license"><option>不要</option><option>あり</option><option>確認中</option></select></div>
+              <div class="field"><label>許認可・営業許可の種類</label><input name="licenseDetail" type="text" placeholder="例：飲食店営業許可、建設業許可"></div>
               <div class="field span-2"><label>事業者メモ</label><textarea name="basicMemo" placeholder="会社概要、主要商品、顧客層、相談背景など"></textarea></div>
             </div>
           </div>
@@ -369,7 +390,14 @@
                 <label><input type="checkbox" name="wageChecks" value="通勤・家族・精皆勤手当を除外">通勤・家族・精皆勤手当を除外</label>
                 <label><input type="checkbox" name="wageChecks" value="役員・個人事業主・専従者を除外">役員・個人事業主・専従者を除外</label>
               </div></div>
-              <div class="field span-2"><label>賃上げ方針・根拠</label><textarea name="wagePlan" placeholder="基本給改定、時給改定、対象者、計算根拠など"></textarea></div>
+              <div class="field span-2"><label>賃上げ方針・根拠<span class="hint">複数選択可。申請メモに文章化して反映します。</span></label><div class="checks">
+                <label><input type="checkbox" name="wagePolicyChoices" value="基本給を引き上げ、毎月固定的に支給される賃金を増額する">基本給を引き上げる</label>
+                <label><input type="checkbox" name="wagePolicyChoices" value="時給単価を引き上げ、対象従業員の所定労働時間に応じた賃上げを行う">時給単価を引き上げる</label>
+                <label><input type="checkbox" name="wagePolicyChoices" value="対象従業員全体に共通する手当を見直し、継続的な賃金改善を行う">共通手当を見直す</label>
+                <label><input type="checkbox" name="wagePolicyChoices" value="人材定着と採用力向上を目的として、補助事業の効果を賃金改善に還元する">定着・採用力向上のため</label>
+                <label><input type="checkbox" name="wagePolicyChoices" value="業務効率化により生まれる利益改善分を、従業員の処遇改善に充てる">効率化による利益改善を還元</label>
+              </div></div>
+              <div class="field span-2"><label>賃上げ方針の補足</label><textarea name="wagePlan" placeholder="対象者、改定時期、具体的な計算根拠など、選択肢だけでは足りない内容"></textarea></div>
               <div class="field span-2"><label>従業員がいない場合の新規雇用予定</label><textarea name="newHirePlan" placeholder="2025年12月時点で従業員ゼロの場合、新規雇用予定・雇用時期・職務内容を記入"></textarea></div>
             </div>
             <div class="notice good" id="wageCalc">平均賃金を入力すると賃上げ率を自動計算します。</div>
@@ -383,11 +411,29 @@
               <div class="field span-2"><label>事業名</label><input name="projectTitle" type="text" placeholder="例：セルフオーダーシステム導入による店舗運営効率化事業"></div>
               <div class="field"><label>開始予定日</label><input name="startDate" type="date"></div>
               <div class="field"><label>完了予定日</label><input name="endDate" type="date"></div>
-              <div class="field span-2"><label>現状の課題</label><textarea name="currentIssue" placeholder="人手不足、原価高騰、既存業務の非効率、販路不足など"></textarea></div>
+              <div class="field span-2"><label>現状の課題<span class="hint">複数選択可。申請書の「直面している課題」欄の材料になります。</span></label><div class="checks">
+                <label><input type="checkbox" name="issueChoices" value="人手不足により、既存業務の処理能力や接客・生産体制に制約が生じている">人手不足</label>
+                <label><input type="checkbox" name="issueChoices" value="原材料費・エネルギー価格等の高騰により、収益性が低下している">原価・エネルギー高騰</label>
+                <label><input type="checkbox" name="issueChoices" value="手作業や紙管理が多く、作業時間や確認作業の負担が大きい">手作業・紙管理が多い</label>
+                <label><input type="checkbox" name="issueChoices" value="設備やシステムが老朽化し、生産性や品質の安定に課題がある">設備・システムの老朽化</label>
+                <label><input type="checkbox" name="issueChoices" value="既存の販売方法だけでは新規顧客や売上の拡大が難しい">販路・集客不足</label>
+                <label><input type="checkbox" name="issueChoices" value="従業員の教育や技術承継に時間を要し、業務の標準化が進んでいない">教育・標準化不足</label>
+              </div></div>
+              <div class="field span-2"><label>課題の補足</label><textarea name="currentIssue" placeholder="選択肢にない事情、具体的な数値、現場の状況など"></textarea></div>
               <div class="field span-2"><label>実施する取組</label><textarea name="projectAction" placeholder="導入設備・システム、開発内容、販路拡大策、実施場所など"></textarea></div>
-              <div class="field span-2"><label>生産性向上・高付加価値化の効果</label><textarea name="expectedEffect" placeholder="作業時間短縮、売上増、廃棄削減、品質安定、客単価向上など"></textarea></div>
-              <div class="field span-2"><label>賃上げ原資とのつながり</label><textarea name="wageConnection" placeholder="取組により得られる利益改善が、どのように持続的な賃上げにつながるか"></textarea></div>
-              <div class="field span-2"><label>スケジュール</label><textarea name="schedule" placeholder="例：6月 見積取得・発注 / 7月 導入 / 8月 運用開始 / 9月 効果測定"></textarea></div>
+              <div class="field span-2"><label>生産性向上・高付加価値化の効果<span class="hint">複数選択可。取組の効果説明に反映します。</span></label><div class="checks">
+                <label><input type="checkbox" name="effectChoices" value="作業時間の短縮により、同じ人員で対応できる業務量を増やす">作業時間短縮</label>
+                <label><input type="checkbox" name="effectChoices" value="省人化・自動化により、従業員の負担軽減と業務効率化を図る">省人化・自動化</label>
+                <label><input type="checkbox" name="effectChoices" value="品質の安定化やミス削減により、顧客満足度と収益性を高める">品質安定・ミス削減</label>
+                <label><input type="checkbox" name="effectChoices" value="新商品・新サービスの提供により、売上機会と客単価の向上を図る">売上・客単価向上</label>
+                <label><input type="checkbox" name="effectChoices" value="在庫・原価・廃棄ロスの管理精度を高め、コスト削減につなげる">原価・ロス削減</label>
+                <label><input type="checkbox" name="effectChoices" value="販路拡大や情報発信の強化により、新規顧客の獲得を目指す">販路拡大・新規顧客獲得</label>
+              </div></div>
+              <div class="field span-2"><label>効果の補足</label><textarea name="expectedEffect" placeholder="期待する効果、改善する業務、売上・時間・コストなどの見込み"></textarea></div>
+              <div class="field span-2"><label>賃上げ原資とのつながり</label><div class="btn-row" style="margin:0 0 8px"><button class="btn secondary small" type="button" id="aiConnectionBtn">AI文章案を生成</button></div><textarea name="wageConnection" placeholder="選択した課題・効果・取組内容からAI文章案を生成できます。必要に応じて手直ししてください。"></textarea></div>
+              <div class="field"><label>スケジュールの型</label><select name="scheduleTemplate" id="scheduleTemplate"><option value="">選択してください</option><option value="equipment">設備・機械導入</option><option value="system">システム・クラウド導入</option><option value="development">商品・サービス開発</option><option value="promotion">広報・販路開拓</option><option value="training">研修・教育訓練</option></select></div>
+              <div class="field"><label>開始月</label><input name="scheduleStartMonth" id="scheduleStartMonth" type="month"></div>
+              <div class="field span-2"><label>スケジュール案</label><div class="btn-row" style="margin:0 0 8px"><button class="btn secondary small" type="button" id="scheduleBtn">スケジュール案を作成</button></div><textarea name="schedule" placeholder="スケジュールの型と開始月から作成できます。必要に応じて編集してください。"></textarea></div>
             </div>
           </div>
         </section>
@@ -523,6 +569,9 @@
       data.id = currentId || makeId();
       data.savedAt = new Date().toISOString();
       data.wageChecks = getChecked("wageChecks");
+      data.wagePolicyChoices = getChecked("wagePolicyChoices");
+      data.issueChoices = getChecked("issueChoices");
+      data.effectChoices = getChecked("effectChoices");
       data.docs = getChecked("docs");
       data.expenses = collectExpenses();
       data.totalCost = data.expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
@@ -534,11 +583,14 @@
       form.reset();
       currentId = data.id || makeId();
       Object.entries(data).forEach(([key, value]) => {
-        if (["wageChecks", "docs", "expenses"].includes(key)) return;
+        if (["wageChecks", "wagePolicyChoices", "issueChoices", "effectChoices", "docs", "expenses"].includes(key)) return;
         const field = form.elements[key];
         if (field) field.value = value ?? "";
       });
       setChecked("wageChecks", data.wageChecks || []);
+      setChecked("wagePolicyChoices", data.wagePolicyChoices || []);
+      setChecked("issueChoices", data.issueChoices || []);
+      setChecked("effectChoices", data.effectChoices || []);
       setChecked("docs", data.docs || []);
       expenseBody.innerHTML = "";
       (data.expenses && data.expenses.length ? data.expenses : [{}]).forEach(addExpenseRow);
@@ -689,45 +741,122 @@
       const wageRate = data.baseWage && data.raisedWage
         ? `${Math.round(((Number(data.raisedWage) - Number(data.baseWage)) / Number(data.baseWage)) * 10000) / 100}%`
         : "未計算";
-      const memo = [
-        "【基本情報】",
-        `事業者名：${data.company || ""}`,
-        `法人/個人：${data.entityType || ""}`,
-        `業種：${data.industry || ""}`,
-        `本店/住所：${data.address || ""}`,
-        `道内事業所：${data.site || ""}`,
-        `従業員数：${data.employees || ""}`,
-        `許認可：${data.license || ""}`,
-        "",
-        "【申請枠・賃上げ】",
-        `申請予定枠：${data.frame === "boost" ? "促進枠" : "通常枠"}`,
-        `パートナーシップ構築宣言：${data.partnership || ""}`,
-        `2025年12月平均賃金：${formatYen(data.baseWage)}`,
-        `賃上げ後平均賃金：${formatYen(data.raisedWage)}`,
-        `賃上げ率：${wageRate}`,
-        `賃上げ予定月：${data.wageMonth || ""}`,
-        `賃上げ方針：${data.wagePlan || ""}`,
-        "",
-        "【事業計画】",
-        `事業名：${data.projectTitle || ""}`,
-        `実施期間：${data.startDate || ""} ～ ${data.endDate || ""}`,
-        `現状の課題：${data.currentIssue || ""}`,
-        `実施する取組：${data.projectAction || ""}`,
-        `期待効果：${data.expectedEffect || ""}`,
-        `賃上げ原資とのつながり：${data.wageConnection || ""}`,
-        `スケジュール：${data.schedule || ""}`,
-        "",
-        "【経費】",
-        expenseLines,
-        `税抜経費合計：${Number(data.totalCost || 0).toLocaleString()}円`,
-        "",
-        "【準備済み書類】",
-        (data.docs || []).join("、") || "未入力",
-        "",
-        "【不足書類・確認事項】",
-        data.missingDocs || ""
-      ].join("\n");
-      document.getElementById("draftOutput").textContent = memo;
+      const issueText = buildIssueText(data);
+      const effectText = buildEffectText(data);
+      const wagePolicyText = buildWagePolicyText(data);
+      const wageConnectionText = data.wageConnection || buildWageConnectionText(data);
+      const sections = [
+        ["基本情報", [
+          `事業者名：${data.company || ""}`,
+          `法人/個人：${data.entityType || ""}`,
+          `業種：${data.industry || ""}`,
+          `本店/住所：${data.address || ""}`,
+          `道内事業所：${data.site || ""}`,
+          `従業員数：${data.employees || ""}`,
+          `許認可：${data.license || ""}${data.licenseDetail ? "（" + data.licenseDetail + "）" : ""}`
+        ].join("\n")],
+        ["申請枠・賃上げ", [
+          `申請予定枠：${data.frame === "boost" ? "促進枠" : "通常枠"}`,
+          `パートナーシップ構築宣言：${data.partnership || ""}`,
+          `2025年12月平均賃金：${formatYen(data.baseWage)}`,
+          `賃上げ後平均賃金：${formatYen(data.raisedWage)}`,
+          `賃上げ率：${wageRate}`,
+          `賃上げ予定月：${data.wageMonth || ""}`,
+          `賃上げ方針：${wagePolicyText}`
+        ].join("\n")],
+        ["事業名", data.projectTitle || ""],
+        ["現状の課題", issueText],
+        ["実施する取組", data.projectAction || ""],
+        ["生産性向上・高付加価値化の効果", effectText],
+        ["賃上げ原資とのつながり", wageConnectionText],
+        ["スケジュール", data.schedule || ""],
+        ["経費", `${expenseLines}\n税抜経費合計：${Number(data.totalCost || 0).toLocaleString()}円`],
+        ["準備済み書類・不足事項", `準備済み：${(data.docs || []).join("、") || "未入力"}\n不足・確認事項：${data.missingDocs || ""}`]
+      ];
+      document.getElementById("draftOutput").innerHTML = sections.map(([title, body], index) => `
+        <div class="draft-item">
+          <div class="draft-item-head">
+            <span>${escapeHtml(title)}</span>
+            <button class="btn secondary small" type="button" onclick="copyPlanItem(${index})">コピー</button>
+          </div>
+          <div class="draft-item-body" data-copy-index="${index}">${escapeHtml(body || "未入力")}</div>
+        </div>
+      `).join("");
+    }
+
+    function copyPlanItem(index) {
+      const target = document.querySelector(`[data-copy-index="${index}"]`);
+      if (!target) return;
+      navigator.clipboard.writeText(target.textContent.trim());
+      showToast("項目をコピーしました");
+    }
+
+    function buildIssueText(data) {
+      const items = data.issueChoices || [];
+      const supplement = (data.currentIssue || "").trim();
+      const base = items.length ? items.join("。") + "。" : "";
+      return [base, supplement].filter(Boolean).join("\n");
+    }
+
+    function buildEffectText(data) {
+      const items = data.effectChoices || [];
+      const supplement = (data.expectedEffect || "").trim();
+      const base = items.length ? items.join("。") + "。" : "";
+      return [base, supplement].filter(Boolean).join("\n");
+    }
+
+    function buildWagePolicyText(data) {
+      const items = data.wagePolicyChoices || [];
+      const supplement = (data.wagePlan || "").trim();
+      const base = items.length ? items.join("。") + "。" : "";
+      return [base, supplement].filter(Boolean).join("\n");
+    }
+
+    function buildWageConnectionText(data) {
+      const action = (data.projectAction || "本補助事業の取組").trim();
+      const effects = data.effectChoices && data.effectChoices.length
+        ? data.effectChoices.map(text => text.replace(/。$/,"")).join("、")
+        : "業務効率化や収益性の改善";
+      const issues = data.issueChoices && data.issueChoices.length
+        ? data.issueChoices.map(text => text.replace(/。$/,"")).join("、")
+        : "現在の経営課題";
+      const policy = data.wagePolicyChoices && data.wagePolicyChoices.length
+        ? data.wagePolicyChoices.map(text => text.replace(/。$/,"")).join("、")
+        : "継続的な賃金改善";
+      return `当社は、${issues}という課題に対応するため、${action}を実施する。本取組により、${effects}を図り、限られた人員でも安定して付加価値を生み出せる体制を整える。これにより得られる利益改善分を${policy}に充て、補助事業の効果を一時的な設備投資にとどめず、従業員の処遇改善と人材定着につなげる。`;
+    }
+
+    function generateWageConnection() {
+      const data = collectData();
+      form.elements.wageConnection.value = buildWageConnectionText(data);
+      scheduleAutoSave();
+      showToast("賃上げ原資とのつながりの文章案を作成しました");
+    }
+
+    function generateSchedule() {
+      const template = document.getElementById("scheduleTemplate").value;
+      const start = document.getElementById("scheduleStartMonth").value;
+      const labels = {
+        equipment: ["見積取得・仕様確認", "発注・契約", "納品・設置", "試運転・従業員への操作説明", "本格運用・効果確認"],
+        system: ["見積取得・導入範囲の整理", "契約・初期設定", "データ登録・運用設計", "従業員への操作説明", "本格運用・効果確認"],
+        development: ["企画内容の整理", "試作・設計", "改良・検証", "販売方法・広報内容の準備", "提供開始・効果確認"],
+        promotion: ["広報内容・販路の整理", "制作・出展申込", "広告掲載・展示会出展", "顧客対応・商談実施", "反応分析・改善"],
+        training: ["研修内容・受講者の整理", "申込・教材準備", "研修受講", "社内展開・業務手順への反映", "効果確認"]
+      };
+      const steps = labels[template] || ["見積取得・計画確定", "発注・契約", "導入・実施", "運用開始", "効果確認"];
+      const months = buildMonthLabels(start, steps.length);
+      form.elements.schedule.value = steps.map((step, index) => `${months[index]}　${step}`).join("\n");
+      scheduleAutoSave();
+      showToast("スケジュール案を作成しました");
+    }
+
+    function buildMonthLabels(start, count) {
+      if (!start) return Array.from({ length: count }, (_, index) => `${index + 1}か月目`);
+      const [year, month] = start.split("-").map(Number);
+      return Array.from({ length: count }, (_, index) => {
+        const date = new Date(year, month - 1 + index, 1);
+        return `${date.getFullYear()}年${date.getMonth() + 1}月`;
+      });
     }
 
     function scheduleAutoSave() {
@@ -762,9 +891,16 @@
     document.getElementById("newBtn").addEventListener("click", newCase);
     document.getElementById("addExpenseBtn").addEventListener("click", () => { addExpenseRow(); scheduleAutoSave(); });
     document.getElementById("calcBtn").addEventListener("click", calculateSubsidy);
+    document.getElementById("aiConnectionBtn").addEventListener("click", generateWageConnection);
+    document.getElementById("scheduleBtn").addEventListener("click", generateSchedule);
     document.getElementById("generateDraftBtn").addEventListener("click", generateDraft);
     document.getElementById("copyDraftBtn").addEventListener("click", async () => {
-      await navigator.clipboard.writeText(document.getElementById("draftOutput").textContent);
+      const sections = [...document.querySelectorAll(".draft-item")].map(item => {
+        const title = item.querySelector(".draft-item-head span")?.textContent || "";
+        const body = item.querySelector(".draft-item-body")?.textContent || "";
+        return `【${title}】\n${body.trim()}`;
+      });
+      await navigator.clipboard.writeText(sections.length ? sections.join("\n\n") : document.getElementById("draftOutput").textContent);
       showToast("コピーしました");
     });
     document.getElementById("caseSearch").addEventListener("input", renderCases);
